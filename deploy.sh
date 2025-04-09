@@ -1,13 +1,25 @@
 #!/bin/bash
 
-cd /home/oyakovenko/django-oscar
-
 source /home/oyakovenko/venv/bin/activate
 
-git pull origin master
+cd /home/oyakovenko/django-oscar || exit 1
 
-pip install -r requirements.txt
+{
+  echo "=== DEPLOY STARTED: $(date) ==="
 
-python manage.py makemigrations --noinput
-python manage.py migrate --noinput
-python manage.py collectstatic --noinput
+  echo "--- Git pull ---"
+  git pull origin master
+
+  echo "--- Installing requirements ---"
+  pip install -r requirements.txt
+
+  echo "--- Applying migrations ---"
+  python manage.py makemigrations --noinput
+  python manage.py migrate --noinput
+
+  echo "--- Collecting static files ---"
+  python manage.py collectstatic --noinput
+
+  echo "=== DEPLOY COMPLETED: $(date) ==="
+} >> /home/oyakovenko/django-oscar/deploy_log.log 2>&1
+
