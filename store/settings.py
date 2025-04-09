@@ -14,7 +14,7 @@ import os
 import platform
 from pathlib import Path
 from decouple import config # pylint: disable=import-error
-from oscar.defaults import *  # pylint: disable=unused-wildcard-import, import-error
+from oscar.defaults import *  # pylint: disable=unused-wildcard-import, import-error, wildcard-import
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
