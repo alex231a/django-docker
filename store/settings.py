@@ -10,11 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-from pathlib import Path
-from decouple import config
 import os
 import platform
-from oscar.defaults import *
+from pathlib import Path
+from decouple import config # pylint: disable=import-error
+from oscar.defaults import *  # pylint: disable=wildcard-import disable=import-error
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,12 +33,11 @@ if os_type == 'Windows':
     PAYPAL_API_SIGNATURE = config('PAYPAL_API_SIGNATURE')
 else:
     DEBUG = False
-    ALLOWED_HOSTS = ['oyakovenko.pythonanywhere.com',]
+    ALLOWED_HOSTS = ['oyakovenko.pythonanywhere.com', ]
     SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
     PAYPAL_API_USERNAME = os.environ.get('PAYPAL_API_USERNAME')
     PAYPAL_API_PASSWORD = os.environ.get('PAYPAL_API_PASSWORD')
     PAYPAL_API_SIGNATURE = os.environ.get('PAYPAL_API_SIGNATURE')
-
 
 # Application definition
 
@@ -114,7 +114,7 @@ ROOT_URLCONF = 'store.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates',],
+        'DIRS': [BASE_DIR / 'templates', ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -125,7 +125,8 @@ TEMPLATES = [
 
                 'oscar.apps.search.context_processors.search_form',
                 'oscar.apps.checkout.context_processors.checkout',
-                'oscar.apps.communication.notifications.context_processors.notifications',
+                'oscar.apps.communication.notifications.context_processors'
+                '.notifications',
                 'oscar.core.context_processors.metadata',
             ],
         },
@@ -133,7 +134,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'store.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -145,25 +145,27 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation'
+                '.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.password_validation'
+                '.MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation'
+                '.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation'
+                '.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -175,7 +177,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -196,7 +197,6 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
@@ -205,7 +205,6 @@ HAYSTACK_CONNECTIONS = {
 
 THUMBNAIL_FORMAT = 'PNG'
 EMAIL_BACKEND = "django.core.mail.backends.dummy.EmailBackend"
-
 
 PAYPAL_SANDBOX_MODE = True
 PAYPAL_CALLBACK_HTTPS = False
