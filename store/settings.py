@@ -220,6 +220,11 @@ OSCAR_DEFAULT_CURRENCY = 'USD'
 OSCAR_ALLOW_ANON_CHECKOUT = True
 
 #logging
+
+logs_dir = os.path.join(BASE_DIR, 'logs')
+if not os.path.exists(logs_dir):
+    os.makedirs(logs_dir)
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
