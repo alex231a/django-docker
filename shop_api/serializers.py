@@ -6,11 +6,12 @@ into JSON representations for the Django REST Framework views.
 """
 
 import logging
-from oscar.apps.catalogue.models import Product # pylint: disable=import-error
-from oscar.apps.partner.strategy import Selector # pylint: disable=import-error
+from oscar.apps.catalogue.models import Product  # pylint: disable=import-error
+from oscar.apps.partner.strategy import Selector  # pylint: disable=import-error
 from rest_framework import serializers
 
 logger = logging.getLogger('shop_api')
+
 
 class ProductSerializer(serializers.ModelSerializer):
     """
@@ -35,13 +36,11 @@ class ProductSerializer(serializers.ModelSerializer):
         info = strategy.fetch_for_product(obj)
         if info.price.is_tax_known:
             price = str(info.price.incl_tax)
-            logger.info(
-                f"[get_price] Product ID {obj.id} - price incl. tax: {price}"
-            )
+            logger.info("[get_price] Product ID %s - price incl. tax: %s",
+                        obj.id, price)
         else:
             price = str(info.price.excl_tax)
-            logger.info(
-                f"[get_price] Product ID {obj.id} - price excl. tax: {price}"
-            )
+            logger.info("[get_price] Product ID %s - price excl. tax: %s",
+                        obj.id, price)
 
         return price

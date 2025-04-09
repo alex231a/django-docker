@@ -5,7 +5,6 @@ Registers the ProductViewSet using Django REST Framework's router
 and exposes the `/api/products/` endpoints.
 """
 
-from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import ProductViewSet
 
