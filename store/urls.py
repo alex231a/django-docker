@@ -25,7 +25,7 @@ urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
     path('', include(apps.get_app_config('oscar').urls[0])),
     path('checkout/paypal/', include('paypal.express.urls')),
-    path('', include('shop_api.urls')),
+    path('api/v1/', include('shop_api.urls')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

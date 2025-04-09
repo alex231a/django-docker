@@ -5,10 +5,12 @@ This module defines serializers that transform Product model instances
 into JSON representations for the Django REST Framework views.
 """
 
+import logging
 from oscar.apps.catalogue.models import Product # pylint: disable=import-error
 from oscar.apps.partner.strategy import Selector # pylint: disable=import-error
 from rest_framework import serializers
 
+logger = logging.getLogger('shop_api')
 
 class ProductSerializer(serializers.ModelSerializer):
     """
@@ -32,5 +34,14 @@ class ProductSerializer(serializers.ModelSerializer):
         strategy = Selector().strategy(request=request)
         info = strategy.fetch_for_product(obj)
         if info.price.is_tax_known:
-            return str(info.price.incl_tax)
-        return str(info.price.excl_tax)
+            price = str(info.price.incl_tax)
+            logger.info(
+                f"[get_price] Product ID {obj.id} - price incl. tax: {price}"
+            )
+        else:
+            price = str(info.price.excl_tax)
+            logger.info(
+                f"[get_price] Product ID {obj.id} - price excl. tax: {price}"
+            )
+
+        return price

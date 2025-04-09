@@ -1,8 +1,8 @@
 #!/bin/bash
 
-source /home/oyakovenko/venv/bin/activate
-
 cd /home/oyakovenko/django-oscar
+
+source /home/oyakovenko/venv/bin/activate
 
 git pull origin master
 
