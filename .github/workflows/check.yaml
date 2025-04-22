@@ -56,18 +56,3 @@ jobs:
       - name: Run tests
         run: |
           pytest shop_api/tests
-
-  deploy:
-    needs: [test]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger deploy on PythonAnywhere
-        run: |
-          curl -X POST https://www.pythonanywhere.com/api/v0/user/${{ secrets.PA_USERNAME }}/consoles/ \
-            -H "Authorization: Token ${{ secrets.PA_API_TOKEN }}" \
-            -d "executable=/bin/bash&command=/home/${{ secrets.PA_USERNAME }}/deploy.sh"
-
-      - name: Reload web app
-        run: |
-          curl -X POST https://www.pythonanywhere.com/api/v0/user/${{ secrets.PA_USERNAME }}/webapps/${{ secrets.PA_USERNAME }}.pythonanywhere.com/reload/ \
-            -H "Authorization: Token ${{ secrets.PA_API_TOKEN }}"

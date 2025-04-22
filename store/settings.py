@@ -31,6 +31,13 @@ if os_type == 'Windows':
     PAYPAL_API_USERNAME = config('PAYPAL_API_USERNAME')
     PAYPAL_API_PASSWORD = config('PAYPAL_API_PASSWORD')
     PAYPAL_API_SIGNATURE = config('PAYPAL_API_SIGNATURE')
+elif os.getenv('DOCKER_ENV', '') == 'true':
+    DEBUG = True
+    ALLOWED_HOSTS = ['localhost', '0.0.0.0', 'host.docker.internal']
+    SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+    PAYPAL_API_USERNAME = os.environ.get('PAYPAL_API_USERNAME')
+    PAYPAL_API_PASSWORD = os.environ.get('PAYPAL_API_PASSWORD')
+    PAYPAL_API_SIGNATURE = os.environ.get('PAYPAL_API_SIGNATURE')
 else:
     DEBUG = False
     ALLOWED_HOSTS = ['oyakovenko.pythonanywhere.com', ]
@@ -138,10 +145,21 @@ WSGI_APPLICATION = 'store.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_DB', 'postgres'),
+        'USER': os.environ.get('POSTGRES_USER', 'postgres'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'password'),
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
@@ -189,7 +207,12 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-MEDIA_ROOT = BASE_DIR / 'media'
+
+if os.getenv('DOCKER_ENV', '') == 'true':
+    MEDIA_ROOT = '/app/media'
+else:
+    MEDIA_ROOT = BASE_DIR / 'media'
+
 MEDIA_URL = '/media/'
 
 AUTHENTICATION_BACKENDS = (
